@@ -1,0 +1,183 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+Checkout | MultiZone
+{% endblock title %}
+
+{% block content %}
+<section class="bg-light py-4 my-5" style="min-height:600px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3">Checkout</h4>
+                <hr style="border-color:#b8bfc2;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'cart' %}">Cart</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                    </ol>
+                </nav>
+                {% include 'shop/inc/message.html' %}
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <!-- Order Summary -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        {% for item in cart %}
+                        <div class="row mb-3">
+                            <div class="col-3">
+                                {% if item.product.product_image %}
+                                    <img src="{{item.product.product_image.url}}" class="img-fluid" style="max-height: 80px;" alt="{{item.product.name}}">
+                                {% else %}
+                                    <div class="d-flex align-items-center justify-content-center bg-secondary" style="width: 80px; height: 80px;">
+                                        <i class="fas fa-image text-white"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-6">
+                                <h6>{{item.product.name}}</h6>
+                                <p class="text-muted mb-0">Quantity: {{item.product_qty}}</p>
+                                <p class="text-muted mb-0">Price: Rs. {{item.product.selling_price}}</p>
+                            </div>
+                            <div class="col-3 text-end">
+                                <h6 class="text-primary">Rs. {{item.total_cost}}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        {% endfor %}
+
+                        <div class="row">
+                            <div class="col-9">
+                                <h5>Total Amount</h5>
+                            </div>
+                            <div class="col-3 text-end">
+                                <h5 class="text-success">Rs. {{total_amount}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Details -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Payment Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="{% url 'place_order' %}">
+                            {% csrf_token %}
+
+                            <!-- Shipping Address -->
+                            <div class="mb-3">
+                                <label for="full_name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="full_name" name="full_name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{user.email}}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Shipping Address</label>
+                                <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control" id="city" name="city" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="pincode" class="form-label">Pincode</label>
+                                <input type="text" class="form-control" id="pincode" name="pincode" required>
+                            </div>
+
+                            <!-- Payment Method -->
+                            <div class="mb-3">
+                                <label class="form-label">Payment Method</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod" checked>
+                                    <label class="form-check-label" for="cod">
+                                        Cash on Delivery
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment_method" id="online" value="online">
+                                    <label class="form-check-label" for="online">
+                                        Online Payment (UPI/Card)
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Order Total -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <strong>Total Amount:</strong>
+                                    <strong class="text-success">Rs. {{total_amount}}</strong>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="fas fa-credit-card"></i> Place Order
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Payment method handling
+document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        if (this.value === 'online') {
+            // Could add online payment integration here
+            alert('Online payment feature coming soon! Please select Cash on Delivery for now.');
+            document.getElementById('cod').checked = true;
+        }
+    });
+});
+</script>
+
+<style>
+.card {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border: none;
+}
+
+.card-header {
+    background-color: #1D232C;
+    color: white;
+    border-bottom: none;
+}
+
+.form-check-label {
+    cursor: pointer;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+</style>
+{% endblock content %}
