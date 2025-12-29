@@ -1,0 +1,30 @@
+# env: dev
+# namespace: dev
+
+# django:
+#   ALLOWED_HOSTS: "sample.dev.local,localhost,127.0.0.1"
+#   DB_ENGINE: "django.db.backends.mysql"
+#   DB_HOST: "db"
+#   DB_NAME: "ecommerce_project"
+#   DB_PORT: "3306"
+#   DEBUG: "True"
+
+# host: sample.dev.local
+# tlsSecret: sample-dev-tls
+
+# httpRoute:
+#   enabled: false
+
+env: dev
+namespace: dev
+
+django:
+  DEBUG: "True"
+  ALLOWED_HOSTS: "sample.dev.local,localhost,127.0.0.1,10.10.5.170"
+  DATABASE_URL: "mysql://django_user:django_password@db:3306/ecommerce_project"
+
+host: sample.dev.local
+tlsSecret: sample-dev-tls
+
+httpRoute:
+  enabled: false
