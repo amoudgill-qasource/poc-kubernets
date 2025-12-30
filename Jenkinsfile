@@ -17,14 +17,13 @@ pipeline {
         stage('Build Image with Kaniko') {
             steps {
                 script {
-                    def commitId = sh(
-                        script: 'git rev-parse --short HEAD',
-                        returnStdout: true
-                    ).trim()
+                    int buildNum = BUILD_NUMBER.toInteger()
+                    int major = buildNum / 10
+                    int minor = buildNum % 10
 
-                    env.IMAGE_TAG  = "${BRANCH_NAME}-${BUILD_NUMBER}-${commitId}"
-                    env.IMAGE_TAR  = "${APP_NAME}-${IMAGE_TAG}.tar"
-                    env.IMAGE_NAME = "${APP_NAME}:${IMAGE_TAG}"
+                    env.IMAGE_TAG  = "${major}.${minor}"
+                    env.IMAGE_TAR  = "${APP_NAME}-${env.IMAGE_TAG}.tar"
+                    env.IMAGE_NAME = "${APP_NAME}:${env.IMAGE_TAG}"
 
                     sh '''
                       docker run --rm \
