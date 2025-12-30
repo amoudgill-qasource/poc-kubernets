@@ -28,7 +28,11 @@ RUN mkdir -p staticfiles
 # Collect static files (manage.py is in ecommerce/ directory)
 RUN cd ecommerce && python manage.py collectstatic --noinput
 
-# Create a non-root user
+# Copy entrypoint script
+COPY entrypoint.sh /app/
+RUN chmod +x /app/entrypoint.sh
+
+# Create a non-root user for security
 RUN useradd --create-home --shell /bin/bash app \
     && chown -R app:app /app
 USER app
@@ -36,5 +40,5 @@ USER app
 # Expose port
 EXPOSE 8000
 
-# Run the application (from ecommerce directory)
-CMD ["python", "ecommerce/manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["/bin/bash", "/app/entrypoint.sh"]
+
