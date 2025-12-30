@@ -22,15 +22,16 @@ pipeline {
                     int minor = buildNum % 10
 
                     env.IMAGE_TAG  = "${major}.${minor}"
+                    env.IMAGE_TAR  = "${APP_NAME}-${env.IMAGE_TAG}.tar"
                     env.IMAGE_NAME = "${APP_NAME}:${env.IMAGE_TAG}"
 
                     sh '''
                       docker run --rm \
                         -v $(pwd):/workspace \
-                        -v /var/run/docker.sock:/var/run/docker.sock \
                         gcr.io/kaniko-project/executor:debug \
                         --context=/workspace \
                         --dockerfile=/workspace/Dockerfile \
+                        --tar-path=/workspace/${IMAGE_TAR} \
                         --destination=${IMAGE_NAME} \
                         --no-push
                     '''
@@ -41,7 +42,7 @@ pipeline {
         stage('Load Image into KIND') {
             steps {
                 sh '''
-                  kind load docker-image ${IMAGE_NAME} --name ${KIND_CLUSTER}
+                  kind load image-archive ${IMAGE_TAR} --name ${KIND_CLUSTER}
                 '''
             }
         }
