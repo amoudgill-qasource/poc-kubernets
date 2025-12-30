@@ -22,7 +22,14 @@ step "deploy-a-helm-chart" {
                 ]
                 EOT
             Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
+            Octopus.Action.RunOnServer = "true"
             Octopus.Action.Script.ScriptSource = "GitRepository"
+            OctopusUseBundledTooling = "False"
+        }
+
+        container {
+            feed = "dockerhub-anon"
+            image = "octopusdeploy/worker-tools:6.5.0-ubuntu.22.04"
         }
     }
 }
