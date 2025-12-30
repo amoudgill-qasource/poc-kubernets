@@ -26,10 +26,5 @@ step "deploy-a-helm-chart" {
             Octopus.Action.Script.ScriptSource = "GitRepository"
             OctopusUseBundledTooling = "False"
         }
-
-        container {
-            feed = "dockerhub-anon"
-            image = "octopusdeploy/worker-tools:6.5.0-ubuntu.22.04"
-        }
     }
 }
