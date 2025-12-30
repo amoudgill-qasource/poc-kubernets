@@ -9,7 +9,7 @@ step "deploy-a-helm-chart" {
         environments = ["development"]
         properties = {
             Octopus.Action.GitRepository.Source = "Project"
-            Octopus.Action.Helm.ChartDirectory = " /helm"
+            Octopus.Action.Helm.ChartDirectory = "helm/**"
             Octopus.Action.Helm.Namespace = "dev"
             Octopus.Action.Helm.ReleaseName = "ecommerce"
             Octopus.Action.Helm.ResetValues = "True"
