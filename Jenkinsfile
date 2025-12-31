@@ -51,7 +51,7 @@ pipeline {
             steps {
                 sh '''
                 export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=yes"
-                git clone -b helm git@github.com:copperdevops/py-ecommerce-k8s.git
+                git clone -b helm ssh://git@github.com/copperdevops/py-ecommerce-k8s.git
 
                 sed -i "s/^\\s*tag:.*/  tag: ${IMAGE_TAG}/" \
                     py-ecommerce-k8s/helm/values.yaml
