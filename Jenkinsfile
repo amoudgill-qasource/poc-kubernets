@@ -50,6 +50,7 @@ pipeline {
         stage('Update Helm values.yaml Image Tag') {
             steps {
                 sh '''
+                export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=yes"
                 git clone -b helm git@github.com:copperdevops/py-ecommerce-k8s.git
 
                 sed -i "s/^\\s*tag:.*/  tag: ${IMAGE_TAG}/" \
@@ -61,7 +62,7 @@ pipeline {
                 '''
             }
         }
-        
+
         stage('Commit & Push Helm Values Update') {
             steps {
                 sh '''
