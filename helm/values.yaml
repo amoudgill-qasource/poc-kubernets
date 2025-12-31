@@ -1,10 +1,5 @@
 # replicaCount: 1
 
-# image:
-#   repository: sample-app
-#   tag: latest
-#   pullPolicy: IfNotPresent
-
 # containerPort: 8000
 
 # service:
@@ -52,7 +47,7 @@ env: dev
 
 image:
   repository: sample-app
-  tag: latest
+  tag: 3.2
   pullPolicy: Never
 
 containerPort: 8000
