@@ -51,7 +51,7 @@ namespace: dev
 env: dev
 
 image:
-  repository: django-ecommerce
+  repository: sample-app
   tag: latest
   pullPolicy: Never
 
