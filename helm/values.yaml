@@ -51,8 +51,8 @@ namespace: dev
 env: dev
 
 image:
-  repository: django-ecommerce
-  tag: ""
+  repository: sample-app
+  tag: latest
   pullPolicy: Never
 
 containerPort: 8000

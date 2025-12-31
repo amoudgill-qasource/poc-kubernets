@@ -1,30 +1,3 @@
-# env: staging
-# namespace: staging
-
-# host: sample.staging.local
-# tlsSecret: sample-staging-tls
-
-# env:
-#   django:
-#     DEBUG: "False"
-#     ALLOWED_HOSTS: "sample.stage.local"
-
-# secrets:
-#   SECRET_KEY: "staging-secret-key"
-#   DB_USER: "django_user"
-#   DB_PASSWORD: "strong-password"
-
-# mysql:
-#   MYSQL_DATABASE: "ecommerce_project"
-#   MYSQL_USER: "django_user"
-#   MYSQL_PASSWORD: "strong-password"
-#   MYSQL_ROOT_PASSWORD: "very-strong-root-password"
-
-
-# httpRoute:
-#   enabled: false
-
-
 env: staging
 namespace: staging
 
