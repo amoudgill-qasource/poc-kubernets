@@ -55,7 +55,7 @@ pipeline {
                 sed -i "s/^\\s*tag:.*/  tag: ${IMAGE_TAG}/" \
                     py-ecommerce-k8s/helm/values.yaml
 
-                echo "✅ Updated image tag in values.yaml:"
+                echo "Updated image tag in values.yaml:"
                 grep -A2 "image:" py-ecommerce-k8s/helm/values.yaml
 
                 '''
