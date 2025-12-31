@@ -50,18 +50,18 @@ pipeline {
         stage('Update Helm values.yaml Image Tag') {
             steps {
                 sh '''
-                git clone -b helm git@github.com:copperdevops/py-ecommerce-k8s.git
-
+             
+                git clone -b helm ssh://git@github.com/copperdevops/py-ecommerce-k8s.git
                 sed -i "s/^\\s*tag:.*/  tag: ${IMAGE_TAG}/" \
                     py-ecommerce-k8s/helm/values.yaml
 
-                echo "✅ Updated image tag in values.yaml:"
+                echo "Updated image tag in values.yaml:"
                 grep -A2 "image:" py-ecommerce-k8s/helm/values.yaml
 
                 '''
             }
         }
-        
+
         stage('Commit & Push Helm Values Update') {
             steps {
                 sh '''
