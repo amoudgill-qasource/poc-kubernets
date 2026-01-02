@@ -58,8 +58,8 @@ pipeline {
                   rm -rf py-ecommerce-k8s
                   git clone -b helm ssh://git@github.com/copperdevops/py-ecommerce-k8s.git
 
-                  sed -i "s/^\\s*tag:.*/  tag: ${IMAGE_TAG}/" \
-                      py-ecommerce-k8s/helm/values.yaml
+                  sed -i 's/^\\s*tag:.*/  tag: "'${IMAGE_TAG}'"/' \
+                    py-ecommerce-k8s/helm/values.yaml
 
                   echo "Updated image tag in values.yaml:"
                   grep -A2 "image:" py-ecommerce-k8s/helm/values.yaml
