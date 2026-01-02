@@ -47,7 +47,7 @@ env: dev
 
 image:
   repository: sample-app
-  tag: "4.2"
+  tag: "0.3"
   pullPolicy: Never
 
 containerPort: 8000
