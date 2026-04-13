@@ -1,0 +1,25 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8srequiredlabels
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRequiredLabels
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8srequiredlabels
+
+        violation[{"msg": msg}] {
+          labels := input.review.object.metadata.labels
+          not labels.app
+          msg := "Missing label: app"
+        }
+
+        violation[{"msg": msg}] {
+          labels := input.review.object.metadata.labels
+          not labels.team
+          msg := "Missing label: team"
+        }
