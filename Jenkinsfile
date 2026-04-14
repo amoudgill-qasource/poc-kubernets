@@ -86,22 +86,22 @@ pipeline {
               echo "Cloning repository..."
               rm -rf poc-kubernets
 
-              git clone -b main https://${GIT_USER}:${GIT_PASS}@github.com/amoudgill-qasource/poc-kubernets.git
+              git clone -b helm https://${GIT_USER}:${GIT_PASS}@github.com/amoudgill-qasource/poc-kubernets.git
 
               cd poc-kubernets
 
               echo "Updating image tag in values.yaml..."
-              sed -i 's/^\\s*tag:.*/  tag: "'${IMAGE_TAG}'"/' helm/values.yaml
+              sed -i 's/^\\s*tag:.*/  tag: "'${IMAGE_TAG}'"/' django-chart/values.yaml
 
               echo "Updated file preview:"
-              grep -A2 "image:" helm/values.yaml
+              grep -A2 "image:" django-chart/values.yaml
 
               echo "Configuring Git user..."
               git config user.email "jenkins@local"
               git config user.name "Jenkins"
 
               echo "Committing changes..."
-              git add helm/values.yaml
+              git add django-chart/values.yaml
               git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
 
               echo "Pushing changes to GitHub..."
