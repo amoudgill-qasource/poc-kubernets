@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'linux-agent-170' }
+   agent any
 
     environment {
         APP_NAME        = "sample-app"
