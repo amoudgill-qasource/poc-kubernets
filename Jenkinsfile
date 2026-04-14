@@ -73,16 +73,20 @@ pipeline {
             }
         }
 
-  stage('Update Helm values.yaml Image Tag') {
+ stage('Update Helm values.yaml Image Tag') {
     steps {
-        withCredentials([string(credentialsId: 'amoudgill-qasource', variable: 'GIT_TOKEN')]) {
+        withCredentials([usernamePassword(
+            credentialsId: 'amoudgill-qasource',
+            usernameVariable: 'GIT_USER',
+            passwordVariable: 'GIT_PASS'
+        )]) {
             sh '''
               set -e
 
               echo "Cloning repository..."
               rm -rf poc-kubernets
 
-              git clone -b helm https://${GIT_TOKEN}@github.com/amoudgill-qasource/poc-kubernets.git
+              git clone -b helm https://${GIT_USER}:${GIT_PASS}@github.com/amoudgill-qasource/poc-kubernets.git
 
               cd poc-kubernets
 
