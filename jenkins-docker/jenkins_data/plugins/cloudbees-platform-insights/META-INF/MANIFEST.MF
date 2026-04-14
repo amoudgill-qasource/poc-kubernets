@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Created-By: Maven Archiver 3.6.6
+Java-Version: 17
+Build-Jdk-Spec: 21
+Specification-Title: CloudBees Platform Insights Plugin
+Specification-Version: 1.357
+Implementation-Title: CloudBees Platform Insights Plugin
+Implementation-Version: 1.357
+Group-Id: com.cloudbees.jenkins.plugins
+Artifact-Id: cloudbees-platform-insights
+Short-Name: cloudbees-platform-insights
+Long-Name: CloudBees Platform Insights Plugin
+Url: https://docs.cloudbees.com/r/cbci/plugins/cloudbees-platform-insigh
+ ts
+Plugin-Version: 1.357
+Hudson-Version: 2.541.2-cb-39636
+Jenkins-Version: 2.541.2-cb-39636
+Plugin-Dependencies: cloudbees-cbp-unify-common:1.1440,cloudbees-cbp-uni
+ fy-integration-oc:1.1440;resolution:=optional,cloudbees-cbp-unify-integ
+ ration:1.1440;resolution:=optional,operations-center-context:3.28126;re
+ solution:=optional,operations-center-server:3.28126;resolution:=optiona
+ l,caffeine-api:3.2.3-194.v31a_b_f7a_b_5a_81,git:5.9.0;resolution:=optio
+ nal,jackson2-api:2.20.1-423.v13951f6b_6532,metrics:4.2.37-494.v06f9a_93
+ 9d33a_
+Plugin-Developers: 
+Plugin-ScmConnection: scm:git:ssh://git@github.com/cloudbees/cloudbees-p
+ latform-insights-plugin
+Plugin-ScmTag: 1.357
+Plugin-ScmUrl: https://github.com/cloudbees/jenkins-plugins.git/cloudbee
+ s-platform-insights
+Implementation-Build: aafcee07fd7d3085851346c841ac7e9a0cbadb24
+

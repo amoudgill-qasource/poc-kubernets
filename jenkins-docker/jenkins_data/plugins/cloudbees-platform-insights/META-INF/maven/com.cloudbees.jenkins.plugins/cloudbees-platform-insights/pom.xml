@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.cloudbees.jenkins.plugins</groupId>
+    <artifactId>jenkins-plugins</artifactId>
+    <version>1213</version>
+    <relativePath />
+  </parent>
+
+  <artifactId>cloudbees-platform-insights</artifactId>
+  <version>1.357</version>
+  <packaging>hpi</packaging>
+
+  <properties>
+    <cbp-integration.version>1.1440</cbp-integration.version> <!-- TODO Remove once in URR BOM -->
+  </properties>
+
+  <name>CloudBees Platform Insights Plugin</name>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.cloudbees</groupId>
+        <artifactId>unified-release</artifactId>
+        <version>${cb.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.cloudbees.jenkins.plugins</groupId>
+      <artifactId>cloudbees-cbp-unify-common</artifactId>
+      <version>${cbp-integration.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.cloudbees.jenkins.plugins</groupId>
+      <artifactId>cloudbees-cbp-unify-integration</artifactId>
+      <version>${cbp-integration.version}</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.cloudbees.jenkins.plugins</groupId>
+      <artifactId>cloudbees-cbp-unify-integration-oc</artifactId>
+      <version>${cbp-integration.version}</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.jenkins.plugins</groupId>
+      <artifactId>caffeine-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>jackson2-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+      <version>1.18.42</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>metrics</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>git</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.cloudbees.operations-center.common</groupId>
+      <artifactId>operations-center-context</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.cloudbees.operations-center.server</groupId>
+      <artifactId>operations-center-server</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.cloudbees.operations-center.client</groupId>
+      <artifactId>operations-center-client</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.jenkins.configuration-as-code</groupId>
+      <artifactId>test-harness</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock-standalone</artifactId>
+      <version>3.13.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <version>4.3.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <scm>
+    <connection>scm:git:ssh://git@github.com/cloudbees/${project.artifactId}-plugin</connection>
+    <developerConnection>scm:git:ssh://git@github.com/cloudbees/${project.artifactId}-plugin</developerConnection>
+    <tag>1.357</tag>
+  </scm>
+</project>

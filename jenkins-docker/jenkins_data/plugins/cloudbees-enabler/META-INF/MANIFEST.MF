@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Created-By: Maven Archiver 3.6.0
+Build-Jdk-Spec: 11
+Specification-Title: CloudBees Installation Plugin
+Specification-Version: 0.0
+Implementation-Title: CloudBees Installation Plugin
+Implementation-Version: 1.43.v5b_7c0c898e84
+Group-Id: io.jenkins.plugins
+Artifact-Id: cloudbees-enabler
+Short-Name: cloudbees-enabler
+Long-Name: CloudBees Installation Plugin
+Url: https://github.com/jenkinsci/cloudbees-enabler-plugin
+Plugin-Version: 1.43.v5b_7c0c898e84
+Hudson-Version: 2.414.1
+Jenkins-Version: 2.414.1
+Plugin-Developers: 
+Support-Dynamic-Loading: true
+Plugin-License-Name: The MIT license
+Plugin-License-Url: http://www.opensource.org/licenses/mit-license.php
+Plugin-ScmConnection: scm:git:ssh://github.com/jenkinsci/cloudbees-enabl
+ er-plugin.git
+Plugin-ScmTag: 5b7c0c898e84808dc8bc485ef0e0ae5656f0eb4e
+Plugin-ScmUrl: https://github.com/jenkinsci/cloudbees-enabler-plugin
+Plugin-GitHash: 5b7c0c898e84808dc8bc485ef0e0ae5656f0eb4e
+Implementation-Build: 5b7c0c898e84808dc8bc485ef0e0ae5656f0eb4e
+

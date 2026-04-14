@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Created-By: Maven Archiver 3.6.6
+Java-Version: 17
+Build-Jdk-Spec: 17
+Specification-Title: CloudBees Platform Connection Plugin :: Common
+Specification-Version: 1.1440
+Implementation-Title: CloudBees Platform Connection Plugin :: Common
+Implementation-Version: 1.1440
+Group-Id: com.cloudbees.jenkins.plugins
+Artifact-Id: cloudbees-cbp-unify-common
+Short-Name: cloudbees-cbp-unify-common
+Long-Name: CloudBees Platform Connection Plugin :: Common
+Url: https://docs.cloudbees.com/docs/cloudbees-platform/latest/integrati
+ ons/continuous-integration
+Plugin-Version: 1.1440
+Hudson-Version: 2.541.1-cb-39613
+Jenkins-Version: 2.541.1-cb-39613
+Plugin-Dependencies: apache-httpcomponents-client-5-api:5.6-183.ve5a_8a_
+ b_e71e59,commons-lang3-api:3.20.0-109.ve43756e2d2b_4,okhttp-api:4.12.0-
+ 195.vc02552c04ffd,instance-identity:203.v15e81a_1b_7a_38,credentials:14
+ 65.ve8c9516d78b_f,jackson2-api:2.20.1-423.v13951f6b_6532,plain-credenti
+ als:199.v9f8e1f741799,ssh-credentials:361.vb_f6760818e8c
+Plugin-Developers: 
+Plugin-ScmConnection: scm:git:ssh://git@github.com/cloudbees/cloudbees-c
+ bp-unify-integration-plugin.git
+Plugin-ScmTag: 1.1440
+Plugin-ScmUrl: https://github.com/cloudbees/cloudbees-cbp-unify-integrat
+ ion-plugin
+Implementation-Build: fccdea6b27d3e870aa016101a783c5cd28db06d6
+
