@@ -86,7 +86,7 @@ pipeline {
               echo "Cloning repository..."
               rm -rf poc-kubernets
 
-              git clone -b helm https://${GIT_USER}:${GIT_PASS}@github.com/amoudgill-qasource/poc-kubernets.git
+              git clone -b main https://${GIT_USER}:${GIT_PASS}@github.com/amoudgill-qasource/poc-kubernets.git
 
               cd poc-kubernets
 
