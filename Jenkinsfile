@@ -1,5 +1,5 @@
 pipeline {
-   agent any
+    agent any
 
     environment {
         APP_NAME        = "sample-app"
@@ -8,7 +8,7 @@ pipeline {
         OCTOPUS_SPACE   = "Default"
         OCTOPUS_PROJECT = "e-commerce"
         OCTOPUS_ENV     = "Development"
-	OCTOPUS_API_KEY = credentials('octopus-api-key')
+        OCTOPUS_API_KEY = credentials('octopus-api-key')
     }
 
     stages {
@@ -18,6 +18,7 @@ pipeline {
                 cleanWs()
             }
         }
+
         stage('Checkout Source') {
             steps {
                 checkout scm
@@ -49,6 +50,21 @@ pipeline {
             }
         }
 
+        stage('Setup KIND Cluster') {
+            steps {
+                sh '''
+                  export KUBECONFIG=/var/lib/jenkins/.kube/config
+
+                  if ! kind get clusters | grep -q ${KIND_CLUSTER}; then
+                    echo "Creating KIND cluster..."
+                    kind create cluster --name ${KIND_CLUSTER}
+                  else
+                    echo "KIND cluster already exists"
+                  fi
+                '''
+            }
+        }
+
         stage('Load Image into KIND') {
             steps {
                 sh '''
@@ -66,7 +82,7 @@ pipeline {
                   sed -i 's/^\\s*tag:.*/  tag: "'${IMAGE_TAG}'"/' \
                     py-ecommerce-k8s/helm/values.yaml
 
-                  echo "Updated image tag in values.yaml:"
+                  echo "Updated image tag:"
                   grep -A2 "image:" py-ecommerce-k8s/helm/values.yaml
                 '''
             }
