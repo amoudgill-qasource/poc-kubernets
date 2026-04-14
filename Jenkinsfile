@@ -73,20 +73,41 @@ pipeline {
             }
         }
 
-        stage('Update Helm values.yaml Image Tag') {
-            steps {
-                sh '''
-                  rm -rf py-ecommerce-k8s
-                  git clone -b helm https://git@github.com/copperdevops/py-ecommerce-k8s.git
+  stage('Update Helm values.yaml Image Tag') {
+    steps {
+        withCredentials([string(credentialsId: 'amoudgill-qasource', variable: 'GIT_TOKEN')]) {
+            sh '''
+              set -e
 
-                  sed -i 's/^\\s*tag:.*/  tag: "'${IMAGE_TAG}'"/' \
-                    py-ecommerce-k8s/helm/values.yaml
+              echo "Cloning repository..."
+              rm -rf poc-kubernets
 
-                  echo "Updated image tag:"
-                  grep -A2 "image:" py-ecommerce-k8s/helm/values.yaml
-                '''
-            }
+              git clone -b helm https://${GIT_TOKEN}@github.com/amoudgill-qasource/poc-kubernets.git
+
+              cd poc-kubernets
+
+              echo "Updating image tag in values.yaml..."
+              sed -i 's/^\\s*tag:.*/  tag: "'${IMAGE_TAG}'"/' helm/values.yaml
+
+              echo "Updated file preview:"
+              grep -A2 "image:" helm/values.yaml
+
+              echo "Configuring Git user..."
+              git config user.email "jenkins@local"
+              git config user.name "Jenkins"
+
+              echo "Committing changes..."
+              git add helm/values.yaml
+              git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
+
+              echo "Pushing changes to GitHub..."
+              git push origin helm
+
+              echo "✅ Done"
+            '''
         }
+    }
+}
 
         stage('Commit & Push Helm Values Update') {
             steps {
