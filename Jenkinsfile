@@ -77,7 +77,7 @@ pipeline {
             steps {
                 sh '''
                   rm -rf py-ecommerce-k8s
-                  git clone -b helm ssh://git@github.com/copperdevops/py-ecommerce-k8s.git
+                  git clone -b helm https://git@github.com/copperdevops/py-ecommerce-k8s.git
 
                   sed -i 's/^\\s*tag:.*/  tag: "'${IMAGE_TAG}'"/' \
                     py-ecommerce-k8s/helm/values.yaml
