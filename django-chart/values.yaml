@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: django-app
   pullPolicy: IfNotPresent
-  tag: "1.6"
+  tag: ""
 
 labels:
   app: django
