@@ -169,7 +169,7 @@ pipeline {
     environment {
         APP_NAME        = "django-app"
         KIND_CLUSTER    = "dev-cluster"
-        OCTOPUS_SERVER  = "http://host.docker.internal:8083"
+        OCTOPUS_SERVER  = "http://localhost:8083"
         OCTOPUS_SPACE   = "Default"
         OCTOPUS_PROJECT = "Projects-1"
         OCTOPUS_ENV     = "Development"
