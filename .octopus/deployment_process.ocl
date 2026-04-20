@@ -6,13 +6,12 @@ step "deploy-a-helm-chart" {
 
     action {
         action_type = "Octopus.HelmChartUpgrade"
-        environments = ["dev"]
         properties = {
             Octopus.Action.ExecutionTimeout.Minutes = "5"
             Octopus.Action.GitRepository.Source = "External"
             Octopus.Action.Helm.AdditionalArgs = "--atomic --timeout 5m"
             Octopus.Action.Helm.ChartDirectory = "django-chart"
-            Octopus.Action.Helm.Namespace = "dev"
+            Octopus.Action.Helm.Namespace = "default"
             Octopus.Action.Helm.ReleaseName = "django-app"
             Octopus.Action.Helm.ResetValues = "True"
             Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
