@@ -8,7 +8,7 @@ step "deploy-a-helm-chart" {
         action_type = "Octopus.HelmChartUpgrade"
         environments = ["dev"]
         properties = {
-            Octopus.Action.ExecutionTimeout.Minutes = "1"
+            Octopus.Action.ExecutionTimeout.Minutes = "5"
             Octopus.Action.GitRepository.Source = "External"
             Octopus.Action.Helm.ChartDirectory = "django-chart"
             Octopus.Action.Helm.Namespace = "dev"
