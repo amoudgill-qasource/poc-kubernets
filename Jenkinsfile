@@ -186,49 +186,84 @@ pipeline {
             steps { checkout scm }
         }
 
-        stage('Build Image') {
-            steps {
-                script {
-                    env.IMAGE_TAG = "v2"   // 🔥 FIXED (match Helm)
+        // stage('Build Image') {
+        //     steps {
+        //         script {
+        //             env.IMAGE_TAG = "v2"   // 🔥 FIXED (match Helm)
 
-                    sh '''
-                      docker build -t ${APP_NAME}:${IMAGE_TAG} .
-                    '''
-                }
-            }
+        //             sh '''
+        //               docker build -t ${APP_NAME}:${IMAGE_TAG} .
+        //             '''
+        //         }
+        //     }
+        // }
+
+        // stage('Load Image into KIND') {
+        //     steps {
+        //         sh '''
+        //           kind load docker-image ${APP_NAME}:${IMAGE_TAG} --name ${KIND_CLUSTER}
+        //         '''
+        //     }
+        // }
+
+
+ stage('Update Helm values.yaml Image Tag') {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'amoudgill-qasource',
+            usernameVariable: 'GIT_USER',
+            passwordVariable: 'GIT_PASS'
+        )]) {
+            sh '''
+              set -e
+
+              echo "Cloning repository..."
+              rm -rf poc-kubernets
+
+              git clone -b helm https://${GIT_USER}:${GIT_PASS}@github.com/amoudgill-qasource/poc-kubernets.git
+
+              cd poc-kubernets
+
+              echo "Updating image tag in values.yaml..."
+              sed -i 's/^\\s*tag:.*/  tag: "'${IMAGE_TAG}'"/' django-chart/values.yaml
+
+              echo "Updated file preview:"
+              grep -A2 "image:" django-chart/values.yaml
+
+              echo "Configuring Git user..."
+              git config user.email "jenkins@local"
+              git config user.name "Jenkins"
+
+              echo "Committing changes..."
+              git add django-chart/values.yaml
+              git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
+
+              echo "Pushing changes to GitHub..."
+              git push origin helm
+
+              echo "✅ Done"
+            '''
         }
+    }
+}
 
-        stage('Load Image into KIND') {
+        stage('Commit & Push Helm Values Update') {
             steps {
                 sh '''
-                  kind load docker-image ${APP_NAME}:${IMAGE_TAG} --name ${KIND_CLUSTER}
+                  cd poc-kubernets
+
+                  git add .
+
+                  if ! git diff --cached --quiet; then
+                      git commit -m "chore: update image tag to ${IMAGE_TAG}"
+                      git push origin helm
+                  else
+                      echo "No changes to commit"
+                  fi
                 '''
             }
         }
 
-        stage('Update Helm values.yaml') {
-            steps {
-withCredentials([usernamePassword(
-    credentialsId: 'amoudgill-qasource',
-    usernameVariable: 'GIT_USER',
-    passwordVariable: 'GIT_PASS'
-)]) {                    sh '''
-                      rm -rf poc-kubernets
-
-                    git clone -b helm https://${GIT_USER}:${GIT_PASS}@github.com/amoudgill-qasource/poc-kubernets.git                      cd poc-kubernets
-
-                      sed -i 's/^\\s*tag:.*/  tag: "'${IMAGE_TAG}'"/' helm/values.yaml
-
-                      git config user.email "jenkins@local"
-                      git config user.name "Jenkins"
-
-                      git add helm/values.yaml
-                      git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes"
-                      git push origin helm
-                    '''
-                }
-            }
-        }
 
         stage('Octopus Login') {
             steps {
