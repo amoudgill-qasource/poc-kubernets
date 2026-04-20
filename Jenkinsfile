@@ -174,6 +174,7 @@ pipeline {
         OCTOPUS_PROJECT = "e-commerce"
         OCTOPUS_ENV     = "dev"
         OCTOPUS_API_KEY = credentials('octopus-api-key')
+         IMAGE_TAG       = "v2" 
     }
 
     stages {
@@ -223,7 +224,6 @@ pipeline {
               git clone -b helm https://${GIT_USER}:${GIT_PASS}@github.com/amoudgill-qasource/poc-kubernets.git
 
               cd poc-kubernets
-env.IMAGE_TAG = "v2" 
               echo "Updating image tag in values.yaml..."
               sed -i 's/^\\s*tag:.*/  tag: "'${IMAGE_TAG}'"/' django-chart/values.yaml
 
