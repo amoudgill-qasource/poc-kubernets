@@ -1,7 +1,7 @@
 step "deploy-a-helm-chart" {
     name = "Deploy a Helm Chart"
     properties = {
-        Octopus.Action.TargetRoles = "dev"
+        Octopus.Action.TargetRoles = "dev-target"
     }
 
     action {
