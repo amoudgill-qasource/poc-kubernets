@@ -171,8 +171,8 @@ pipeline {
         KIND_CLUSTER    = "dev-cluster"
         OCTOPUS_SERVER  = "http://localhost:8083"
         OCTOPUS_SPACE   = "Default"
-        OCTOPUS_PROJECT = "Projects-1"
-        OCTOPUS_ENV     = "Development"
+        OCTOPUS_PROJECT = "e-commerce"
+        OCTOPUS_ENV     = "dev"
         OCTOPUS_API_KEY = credentials('octopus-api-key')
     }
 
@@ -282,7 +282,8 @@ pipeline {
                     --project ${OCTOPUS_PROJECT} \
                     --version ${IMAGE_TAG} \
                     --space ${OCTOPUS_SPACE} \
-                    --no-prompt
+                    --gitRef helm \
+                    --no-prompt                     
                 '''
             }
         }
