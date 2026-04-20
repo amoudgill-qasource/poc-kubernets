@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     environment {
-        APP_NAME        = "sample-app"
-        KIND_CLUSTER    = "develop-cluster"
-        OCTOPUS_SERVER  = "http://10.10.5.170:8080"
+        APP_NAME        = "django-app"
+        KIND_CLUSTER    = "dev-cluster"
+        OCTOPUS_SERVER  = "http://host.docker.internal:8083"
         OCTOPUS_SPACE   = "Default"
-        OCTOPUS_PROJECT = "e-commerce"
+        OCTOPUS_PROJECT = "Projects-1"
         OCTOPUS_ENV     = "Development"
         OCTOPUS_API_KEY = credentials('octopus-api-key')
     }
@@ -14,119 +14,52 @@ pipeline {
     stages {
 
         stage('Clean Workspace') {
-            steps {
-                cleanWs()
-            }
+            steps { cleanWs() }
         }
 
         stage('Checkout Source') {
-            steps {
-                checkout scm
-            }
+            steps { checkout scm }
         }
 
-        stage('Build Image with Kaniko') {
+        stage('Build Image') {
             steps {
                 script {
-                    int buildNum = BUILD_NUMBER.toInteger()
-                    int major = buildNum / 10
-                    int minor = buildNum % 10
-
-                    env.IMAGE_TAG  = "${major}.${minor}"
-                    env.IMAGE_TAR  = "${APP_NAME}-${env.IMAGE_TAG}.tar"
-                    env.IMAGE_NAME = "${APP_NAME}:${env.IMAGE_TAG}"
+                    env.IMAGE_TAG = "v2"   // 🔥 FIXED (match Helm)
 
                     sh '''
-                      docker run --rm \
-                        -v $(pwd):/workspace \
-                        gcr.io/kaniko-project/executor:debug \
-                        --context=/workspace \
-                        --dockerfile=/workspace/Dockerfile \
-                        --tar-path=/workspace/${IMAGE_TAR} \
-                        --destination=${IMAGE_NAME} \
-                        --no-push
+                      docker build -t ${APP_NAME}:${IMAGE_TAG} .
                     '''
                 }
-            }
-        }
-
-        stage('Setup KIND Cluster') {
-            steps {
-                sh '''
-                  export KUBECONFIG=/var/lib/jenkins/.kube/config
-
-                  if ! kind get clusters | grep -q ${KIND_CLUSTER}; then
-                    echo "Creating KIND cluster..."
-                    kind create cluster --name ${KIND_CLUSTER}
-                  else
-                    echo "KIND cluster already exists"
-                  fi
-                '''
             }
         }
 
         stage('Load Image into KIND') {
             steps {
                 sh '''
-                  kind load image-archive ${IMAGE_TAR} --name ${KIND_CLUSTER}
+                  kind load docker-image ${APP_NAME}:${IMAGE_TAG} --name ${KIND_CLUSTER}
                 '''
             }
         }
 
- stage('Update Helm values.yaml Image Tag') {
-    steps {
-        withCredentials([usernamePassword(
-            credentialsId: 'amoudgill-qasource',
-            usernameVariable: 'GIT_USER',
-            passwordVariable: 'GIT_PASS'
-        )]) {
-            sh '''
-              set -e
-
-              echo "Cloning repository..."
-              rm -rf poc-kubernets
-
-              git clone -b helm https://${GIT_USER}:${GIT_PASS}@github.com/amoudgill-qasource/poc-kubernets.git
-
-              cd poc-kubernets
-
-              echo "Updating image tag in values.yaml..."
-              sed -i 's/^\\s*tag:.*/  tag: "'${IMAGE_TAG}'"/' django-chart/values.yaml
-
-              echo "Updated file preview:"
-              grep -A2 "image:" django-chart/values.yaml
-
-              echo "Configuring Git user..."
-              git config user.email "jenkins@local"
-              git config user.name "Jenkins"
-
-              echo "Committing changes..."
-              git add django-chart/values.yaml
-              git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
-
-              echo "Pushing changes to GitHub..."
-              git push origin helm
-
-              echo "✅ Done"
-            '''
-        }
-    }
-}
-
-        stage('Commit & Push Helm Values Update') {
+        stage('Update Helm values.yaml') {
             steps {
-                sh '''
-                  cd py-ecommerce-k8s
+                withCredentials([string(credentialsId: 'amoudgill-qasource', variable: 'GIT_TOKEN')]) {
+                    sh '''
+                      rm -rf poc-kubernets
 
-                  git add .
+                      git clone -b helm https://${GIT_TOKEN}@github.com/amoudgill-qasource/poc-kubernets.git
+                      cd poc-kubernets
 
-                  if ! git diff --cached --quiet; then
-                      git commit -m "chore: update image tag to ${IMAGE_TAG}"
+                      sed -i 's/^\\s*tag:.*/  tag: "'${IMAGE_TAG}'"/' helm/values.yaml
+
+                      git config user.email "jenkins@local"
+                      git config user.name "Jenkins"
+
+                      git add helm/values.yaml
+                      git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes"
                       git push origin helm
-                  else
-                      echo "No changes to commit"
-                  fi
-                '''
+                    '''
+                }
             }
         }
 
@@ -140,7 +73,7 @@ pipeline {
             }
         }
 
-        stage('Create Octopus Release') {
+        stage('Create Release') {
             steps {
                 sh '''
                   octopus release create \
@@ -152,7 +85,7 @@ pipeline {
             }
         }
 
-        stage('Deploy Release to Development') {
+        stage('Deploy to Dev') {
             steps {
                 sh '''
                   octopus release deploy \
