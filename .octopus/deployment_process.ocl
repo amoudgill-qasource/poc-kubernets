@@ -14,6 +14,7 @@ step "deploy-a-helm-chart" {
             Octopus.Action.Helm.Namespace = "dev"
             Octopus.Action.Helm.ReleaseName = "django-app"
             Octopus.Action.Helm.ResetValues = "True"
+Octopus.Action.Helm.AdditionalArgs = "--atomic --timeout 5m"
             Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
             Octopus.Action.Script.ScriptSource = "GitRepository"
         }
