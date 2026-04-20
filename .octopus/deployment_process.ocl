@@ -6,6 +6,7 @@ step "deploy-a-helm-chart" {
 
     action {
         action_type = "Octopus.HelmChartUpgrade"
+        environments = ["dev"]
         properties = {
             Octopus.Action.ExecutionTimeout.Minutes = "1"
             Octopus.Action.GitRepository.Source = "External"
