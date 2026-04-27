@@ -187,7 +187,7 @@ pipeline {
             steps { checkout scm }
         }
 
-        stage('Set Version') {   👈 ADD HERE
+        stage('Set Version') {   
     steps {
         script {
             env.IMAGE_TAG = "v${BUILD_NUMBER}"
