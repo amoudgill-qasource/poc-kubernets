@@ -174,7 +174,7 @@ pipeline {
         OCTOPUS_PROJECT = "e-commerce"
         OCTOPUS_ENV     = "dev"
         OCTOPUS_API_KEY = credentials('octopus-api-key')
-         IMAGE_TAG       = "v2" 
+         IMAGE_TAG       = "v${BUILD_NUMBER}"   
     }
 
     stages {
@@ -187,6 +187,13 @@ pipeline {
             steps { checkout scm }
         }
 
+        stage('Set Version') {   👈 ADD HERE
+    steps {
+        script {
+            env.IMAGE_TAG = "v${BUILD_NUMBER}"
+        }
+    }
+}
         // stage('Build Image') {
         //     steps {
         //         script {
