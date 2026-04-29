@@ -194,26 +194,25 @@ pipeline {
         }
     }
 }
-        // stage('Build Image') {
-        //     steps {
-        //         script {
-        //             env.IMAGE_TAG = "v2"   // 🔥 FIXED (match Helm)
+        stage('Build Image') {
+            steps {
+                script {
+                    env.IMAGE_TAG = "v2"   // 🔥 FIXED (match Helm)
 
-        //             sh '''
-        //               docker build -t ${APP_NAME}:${IMAGE_TAG} .
-        //             '''
-        //         }
-        //     }
-        // }
+                    sh '''
+                      docker build -t ${APP_NAME}:${IMAGE_TAG} .
+                    '''
+                }
+            }
+        }
 
-        // stage('Load Image into KIND') {
-        //     steps {
-        //         sh '''
-        //           kind load docker-image ${APP_NAME}:${IMAGE_TAG} --name ${KIND_CLUSTER}
-        //         '''
-        //     }
-        // }
-
+        stage('Load Image into KIND') {
+            steps {
+                sh '''
+                  kind load docker-image ${APP_NAME}:${IMAGE_TAG} --name ${KIND_CLUSTER}
+                '''
+            }
+        }
 
  stage('Update Helm values.yaml Image Tag') {
     steps {
