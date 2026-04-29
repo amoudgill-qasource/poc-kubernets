@@ -174,7 +174,7 @@ pipeline {
         OCTOPUS_PROJECT = "e-commerce"
         OCTOPUS_ENV     = "dev"
         OCTOPUS_API_KEY = credentials('octopus-api-key')
-         IMAGE_TAG       = "v${BUILD_NUMBER}"   
+         IMAGE_TAG       = "v.1${BUILD_NUMBER}"   
     }
 
     stages {
